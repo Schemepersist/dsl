@@ -86,3 +86,11 @@ ALTERNATIVE IDEA:
 (sql (select id name)
      (order-by name)
      (where (< id 100)))
+
+(define (select-people)
+  (sql (select user-id firstname (as surname lastname))
+       (from people)))
+
+(define (select-user-id user-id)
+  (sql (select-people)
+       (where (= (column user-id) (variable user-id)))))
