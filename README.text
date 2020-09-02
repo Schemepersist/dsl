@@ -55,8 +55,8 @@ Nice ideas from Squirrel:
 (distinct column) -> column
 
 
-Examples - query
---------
+Examples - select
+-----------------
 
 [Feel free to add and edit. We can always retrieve old stuff from Git.]
 
@@ -69,3 +69,20 @@ Examples - query
 (from people (select (distinct firstname)))
 
 (from people (select firstname (as surname lastname)))
+
+(where (< id 100) (order-by name (select id name)))
+
+ALTERNATIVE IDEA:
+
+(sql (from people)
+     (select (count)))
+
+(sql (select (distinct firstname))
+     (from people))
+
+(sql (from people)
+     (select firstname (as surname lastname)))
+
+(sql (select id name)
+     (order-by name)
+     (where (< id 100)))
