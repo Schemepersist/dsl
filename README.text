@@ -1,2 +1,71 @@
 Domain-specific language to build SQL queries
 =============================================
+
+
+Scope
+-----
+
+- Select, insert, update, delete
+
+- Made of simple parts, as composable and orthogonal as possible
+
+- Subselects (nested select) supported
+
+- No ORM (object-relational mapping), relational only
+
+
+Prior art
+---------
+
+Nice non-ORM DSLs in other languages:
+
+SQLAlchemy (https://www.sqlalchemy.org) for Python
+
+Sequel (http://sequel.jeremyevans.net) for Ruby
+
+    dataset2 = dataset1.select(:id, :name).order(:name).where{id < 100}
+
+Korma (https://github.com/korma/Korma) for Clojure
+
+Honey SQL (https://github.com/seancorfield/honeysql) for Clojure
+
+Squirrel (https://github.com/Masterminds/squirrel) for Go
+
+
+Building blocks
+---------------
+
+Nice ideas from Squirrel:
+
+- Combinators do not mutate a query, they return a new query.
+
+- Combinators can be given in any order: `select where` or `where select`.
+  Each combinator simply adds/changes that part of the SQL statement.
+  The `where` combinator adds/changes the `where` part, etc.
+
+(table <id>) -> table
+
+(as <id> <expr>) -> column
+
+(select <column>) -> select
+(from <table> <select>) -> select
+
+(count) -> column  ; count(*)
+(count <expr>) -> column
+(distinct column) -> column
+
+
+Examples - query
+--------
+
+[Feel free to add and edit. We can always retrieve old stuff from Git.]
+
+(select (* (+ 1 2 3 4) 5))
+
+(select (as fifty (* (+ 1 2 3 4) 5)))
+
+(from people (select (count)))
+
+(from people (select (distinct firstname)))
+
+(from people (select firstname (as surname lastname)))
